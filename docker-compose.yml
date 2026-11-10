@@ -65,9 +65,13 @@ services:
       # Inside Compose, localhost points back to this container. Route Bot API
       # traffic through the service DNS name instead.
       - TG_LOCAL_SERVER=http://telegram-bot-api:8081
+    # telegram-bot-api chỉ cần khi LOCAL_BOT_API=1 (file lớn 2GB).
+    # Khi đó điền TG_API_ID/TG_API_HASH trong .env rồi chạy:
+    #   docker compose up -d telegram-bot-api zalo-tg
     depends_on:
       telegram-bot-api:
         condition: service_healthy
+        required: false
     volumes:
       # Persistent data — lưu topics.json + credentials.json
       - ./data:/app/data
